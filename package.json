@@ -1,6 +1,8 @@
 {
   "name": "notes",
+  "description": "Basic Notes App with Vue 3 Composition API",
   "version": "0.1.0",
+  "author": "Martina Clemente <martina.clem@gmail.com>",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,6 +10,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.22.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },
@@ -18,7 +21,10 @@
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-vue": "^7.0.0-0",
+    "sass": "^1.32.0",
+    "sass-loader": "^10.1.0",
+    "vue-router": "^3.5.2"
   },
   "eslintConfig": {
     "root": true,
