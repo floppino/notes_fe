@@ -1,6 +1,5 @@
 <template>
   <Header />
-  {{ message }}
 	<h1>Notes App</h1>
 	<form @submit.prevent="addNote()">
 		<label>New note</label>
@@ -12,76 +11,69 @@
 		<button>Add Note</button>
 	</form>
 	<h2>Notes List</h2>
-	<ul>
+	<ul :key="componentKey">
+          <!-- <th scope="row">{{user.id}}</th>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.address.city}}</td>
+        </tr> -->
+
 		<li
-			v-for="(note, index) in notes"
-			:key="index"
+			v-for="note in notes"
+			v-bind:key="note.model.ID"
 		>
-			<span
-				:class="{ note: note.done }"
-				@click="doneNote(note)"
-			>{{ note.content }}</span>
-			<button @click="removeNote(index)">Remove</button>
+			<span>{{ note.title }}</span>
+			<span>{{ note.body }}</span>
+			<button @click="removeNote(note.model.ID)">Remove</button>
 		</li>
 	</ul>
 	<!-- <h4 v-if="notes.length === 0">Empty list.</h4> -->
-  <Note />
   <Footer />
 </template>
 
 <script>
+  //import axios from 'axios';
   import Header from '@/components/Header.vue'
   import Footer from '@/components/Footer.vue'
-  import Note from '@/components/Note.vue'
-	//import { ref } from 'vue';
+  import axios from 'axios'
 	export default {
 		name: 'App',
-    components: { Header, Footer, Note },
-		setup () {
-			//const newNote = ref('');
-			// const defaultData = [{
-			// 	done: false,
-			// 	content: 'Write a blog post'
-      // }]
-			// const notesData = JSON.parse(localStorage.getItem('notes')) || defaultData;
-			// const notes = ref(notesData);
-			// function addNote () {
-			// 	if (newNote.value) {
-			// 		notes.value.push({
-			// 			done: false,
-			// 			content: newNote.value
-			// 		});
-			// 		newNote.value = '';
-			// 	}
-			// 	saveData();
-			// }
-
-			// function doneNote (note) {
-			// 	note.done = !note.done
-			// 	saveData();
-			// }
-
-			// function removeNote (index) {
-			// 	notes.value.splice(index, 1);
-			// 	saveData();
-			// }
-
-			// function saveData () {
-			// 	const storageData = JSON.stringify(notes.value);
-			// 	localStorage.setItem('notes', storageData);
-			// }
-
-			// return {
-      //   post: null,
-			// 	notes,
-			// 	newNote,
-			// 	addNote,
-			// 	doneNote,
-			// 	removeNote,
-			// 	saveData
-			// }
-		},
-	}
+    components: { Header, Footer },
+    data () {
+      return {
+        message: null,
+        notes: null
+      };
+    },
+    setup () {
+      function removeNote (noteId) {
+        axios
+          .delete('http://localhost:30079/note/' + noteId)
+          .then(() => {
+            this.getNotes();
+            console.log("Note deleted!")
+          });
+      }
+      return {
+        removeNote
+      }
+    },
+    created() {
+      this.getNotes();
+    },
+    methods: {
+      forceRerender() {
+        this.componentKey += 1;
+      },
+      getNotes() {
+        axios
+          .get('http://localhost:30079/note')
+          .then((res) => {
+            this.notes = res.data.data;
+          });
+      }
+    }
+}
 </script>
 
 <style lang="scss">

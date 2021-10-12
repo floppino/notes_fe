@@ -1,9 +1,10 @@
-import { httpClient } from 'src/boot/axios.js'
+import { httpClient } from '@/boot/axios.js'
  
 const routes = {
    // Get all notes
    async getNotes () {
      const response = await httpClient.get('/note')
+     console.log("1")
      return response
    },
  
@@ -23,7 +24,7 @@ const routes = {
     return response
    },
    // Delete note by id
-   async deleteNote () {
+   async deleteNote (noteId) {
     const response = await httpClient.delete('/note/' + noteId)
     return response
    },
