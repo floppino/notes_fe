@@ -1,8 +1,7 @@
 <template>
+  <Header />
+  {{ message }}
 	<h1>Notes App</h1>
-  <div> 
-    <img alt="Vue logo" src="./assets/notes-logo.png" width="200" height="200">
-  </div>
 	<form @submit.prevent="addNote()">
 		<label>New note</label>
 		<input
@@ -25,56 +24,63 @@
 			<button @click="removeNote(index)">Remove</button>
 		</li>
 	</ul>
-	<h4 v-if="notes.length === 0">Empty list.</h4>
+	<!-- <h4 v-if="notes.length === 0">Empty list.</h4> -->
+  <Note />
+  <Footer />
 </template>
 
 <script>
-	import { ref } from 'vue';
+  import Header from '@/components/Header.vue'
+  import Footer from '@/components/Footer.vue'
+  import Note from '@/components/Note.vue'
+	//import { ref } from 'vue';
 	export default {
 		name: 'App',
+    components: { Header, Footer, Note },
 		setup () {
-			const newNote = ref('');
-			const defaultData = [{
-				done: false,
-				content: 'Write a blog post'
-			}]
-			const notesData = JSON.parse(localStorage.getItem('notes')) || defaultData;
-			const notes = ref(notesData);
-			function addNote () {
-				if (newNote.value) {
-					notes.value.push({
-						done: false,
-						content: newNote.value
-					});
-					newNote.value = '';
-				}
-				saveData();
-			}
+			//const newNote = ref('');
+			// const defaultData = [{
+			// 	done: false,
+			// 	content: 'Write a blog post'
+      // }]
+			// const notesData = JSON.parse(localStorage.getItem('notes')) || defaultData;
+			// const notes = ref(notesData);
+			// function addNote () {
+			// 	if (newNote.value) {
+			// 		notes.value.push({
+			// 			done: false,
+			// 			content: newNote.value
+			// 		});
+			// 		newNote.value = '';
+			// 	}
+			// 	saveData();
+			// }
 
-			function doneNote (note) {
-				note.done = !note.done
-				saveData();
-			}
+			// function doneNote (note) {
+			// 	note.done = !note.done
+			// 	saveData();
+			// }
 
-			function removeNote (index) {
-				notes.value.splice(index, 1);
-				saveData();
-			}
+			// function removeNote (index) {
+			// 	notes.value.splice(index, 1);
+			// 	saveData();
+			// }
 
-			function saveData () {
-				const storageData = JSON.stringify(notes.value);
-				localStorage.setItem('notes', storageData);
-			}
+			// function saveData () {
+			// 	const storageData = JSON.stringify(notes.value);
+			// 	localStorage.setItem('notes', storageData);
+			// }
 
-			return {
-				notes,
-				newNote,
-				addNote,
-				doneNote,
-				removeNote,
-				saveData
-			}
-		}
+			// return {
+      //   post: null,
+			// 	notes,
+			// 	newNote,
+			// 	addNote,
+			// 	doneNote,
+			// 	removeNote,
+			// 	saveData
+			// }
+		},
 	}
 </script>
 
