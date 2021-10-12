@@ -44,7 +44,7 @@
 				if (newNote.value) {
 					notes.value.push({
 						done: false,
-						content: newNoteo.value
+						content: newNote.value
 					});
 					newNote.value = '';
 				}
