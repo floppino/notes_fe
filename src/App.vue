@@ -1,23 +1,32 @@
 <template>
   <Header />
-	<h1>Notes App</h1>
-	<form @submit.prevent="addNote()">
-		<label>New note</label>
-		<input
-			v-model="newNote"
-			name="newNote"
-			autocomplete="off"
-		>
-		<button>Add Note</button>
+	<h1> Notes App </h1>
+  
+  <h2> New Note </h2>
+  <form class="" method="post" @submit.prevent="createNote">
+		<label>Title:</label>
+    <input 
+      type="text" 
+      name="title"
+      v-model="title"
+      >
+		<label>Body:</label>
+    <input 
+      type="text" 
+      name="body"
+      v-model="body"
+      >
+		<label>URL:</label>
+    <input 
+      type="text" 
+      name="url"
+      v-model="url"
+      >
+    <button type="submit" name="button">Add Note</button>
 	</form>
-	<h2>Notes List</h2>
-	<ul :key="componentKey">
-          <!-- <th scope="row">{{user.id}}</th>
-          <td>{{user.name}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.address.city}}</td>
-        </tr> -->
 
+	<h2>Notes List</h2>
+	<ul>
 		<li
 			v-for="note in notes"
 			v-bind:key="note.model.ID"
@@ -41,36 +50,56 @@
     components: { Header, Footer },
     data () {
       return {
-        message: null,
-        notes: null
+        notes: [],
+        note: {}
       };
     },
     setup () {
-      function removeNote (noteId) {
-        axios
-          .delete('http://localhost:30079/note/' + noteId)
-          .then(() => {
-            this.getNotes();
-            console.log("Note deleted!")
-          });
-      }
-      return {
-        removeNote
-      }
     },
     created() {
       this.getNotes();
     },
     methods: {
-      forceRerender() {
-        this.componentKey += 1;
-      },
       getNotes() {
         axios
           .get('http://localhost:30079/note')
           .then((res) => {
             this.notes = res.data.data;
-          });
+          })
+        .catch(err => {
+          console.log(err);
+        })
+      },
+      removeNote (noteId) {
+        axios
+          .delete('http://localhost:30079/note/' + noteId)
+          .then(() => {
+            this.getNotes()
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      },
+      createNote() {
+        this.note.title = this.title,
+        this.note.body = this.body,
+        this.note.url = this.url,
+        console.log("CIAO")
+        console.log(this.note),
+        axios
+          .post('http://localhost:30079/note/', {
+            headers: {
+              'Content-type': 'application/x-www-form-urlencoded',
+            },
+            body: this.note,
+          })
+          .then(() => {
+            console.log(this.note)
+            this.getNotes()
+          })
+          .catch(err => {
+            console.log(err);
+          })
       }
     }
 }
