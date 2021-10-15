@@ -1,26 +1,28 @@
 <template>
   <Header />
 	<h1> Notes App </h1>
-  
-  <h2> New Note </h2>
+	<h3>New Note</h3>
   <form class="" method="post" @submit.prevent="createNote">
-		<label>Title:</label>
     <input 
+      class="input-field"
       type="text" 
       name="title"
-      v-model="title"
+      v-model="note.title"
+      placeholder="Title"
       >
-		<label>Body:</label>
     <input 
+      class="input-field"
       type="text" 
       name="body"
-      v-model="body"
+      v-model="note.body"
+      placeholder="Body"
       >
-		<label>URL:</label>
     <input 
+      class="input-field"
       type="text" 
       name="url"
-      v-model="url"
+      v-model="note.url"
+      placeholder="Url"
       >
     <button type="submit" name="button">Add Note</button>
 	</form>
@@ -51,7 +53,11 @@
     data () {
       return {
         notes: [],
-        note: {}
+        note: {
+          title: "",
+          body: "",
+          url: ""
+        }
       };
     },
     setup () {
@@ -81,18 +87,8 @@
           })
       },
       createNote() {
-        this.note.title = this.title,
-        this.note.body = this.body,
-        this.note.url = this.url,
-        console.log("CIAO")
-        console.log(this.note),
         axios
-          .post('http://localhost:30079/note/', {
-            headers: {
-              'Content-type': 'application/x-www-form-urlencoded',
-            },
-            body: this.note,
-          })
+          .post('http://localhost:30079/note', this.note)
           .then(() => {
             console.log(this.note)
             this.getNotes()
@@ -120,6 +116,12 @@
   $textColor: white;
   $primaryColor: #96CDCD;
   $secondTextColor: #1f2023;
+  .input-field {
+  --placeholder-color: #96CDCD;
+  }
+  .input-field::placeholder {
+  color: var(--placeholder-color);
+  }
   body {
     margin: 0;
     padding: 0;
@@ -161,7 +163,6 @@
         input {
           background-color: transparent;
           border: $border;
-          color: inherit;
         }
       }
       button {
