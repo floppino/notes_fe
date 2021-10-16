@@ -69,7 +69,7 @@
     methods: {
       getNotes() {
         axios
-          .get('http://localhost:30079/note')
+          .get('http://notes-service:30079/note')
           .then((res) => {
             this.notes = res.data.data;
           })
@@ -79,7 +79,7 @@
       },
       removeNote (noteId) {
         axios
-          .delete('http://localhost:30079/note/' + noteId)
+          .delete('http://notes-service:30079/note/' + noteId)
           .then(() => {
             this.getNotes()
           })
@@ -89,7 +89,7 @@
       },
       createNote() {
         axios
-          .post('http://localhost:30079/note', this.note)
+          .post('http://notes-service:30079/note', this.note)
           .then(() => {
             console.log(this.note)
             this.getNotes()
@@ -105,6 +105,8 @@
 <style>
   .input-field {
   --placeholder-color: #96CDCD;
+  color: white;
+  font-weight: normal;
   }
   .input-field::placeholder {
   color: var(--placeholder-color);
