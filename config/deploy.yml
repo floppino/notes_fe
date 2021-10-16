@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-fe-deployment
+  labels:
+    app: notes-fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-fe
+  template:
+    metadata:
+      labels:
+        app: notes-fe
+    spec:
+      containers:
+      - name: notes-fe
+        image: notes_fe:0.2
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: notes-fe
+  name: notes-fe-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30080
+  selector:
+    app: notes-fe
+  type: NodePort
+status:
+  loadBalancer: {}
